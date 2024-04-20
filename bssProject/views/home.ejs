@@ -1,0 +1,68 @@
+<%- include('partials/header') %>
+<style>
+    .tab {
+      background-color: #f1f1f1;
+      float: left;
+      border: 1px solid #ccc;
+      cursor: pointer;
+      padding: 10px 20px;
+      transition: background-color 0.3s;
+    }
+    .tab:hover {
+      background-color: #ddd;
+    }
+    .tabcontent {
+      display: none;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-top: none;
+    }
+    </style>
+    
+    <div class="tab" onclick="openTab('Login')">Login</div>
+    <div class="tab" onclick="openTab('Home')">Home</div>
+    <div class="tab" onclick="openTab('About')">About</div>
+    <div class="tab" onclick="openTab('Contact')">Contact</div>
+    
+    <div id="Login" class="tabcontent">
+        <h1>Login</h1>
+        <p>Login:</p>
+        <button onclick="user()">user</button>
+        <button onclick="manager()">manager</button>
+    </div>
+    <div id="Home" class="tabcontent">
+      <h3>Home Page</h3>
+      <p>Welcome to the home page!</p>
+    </div>
+    
+    <div id="About" class="tabcontent">
+      <h3>About Page</h3>
+      <p>Learn more about us!</p>
+    </div>
+    
+    <div id="Contact" class="tabcontent">
+      <h3>Contact Page</h3>
+      <p>Get in touch with us.</p>
+    </div>
+    
+
+    
+
+    <script>
+      function openTab(tabName) {
+      var i;
+      var tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+      document.getElementById(tabName).style.display = "block";
+    }
+        function user(){
+            window.location.href = "/userlogin";
+        }
+        function manager(){
+            window.location.href = "/managerlogin";
+        }
+    </script>
+    
+<%- include('partials/footer') %>

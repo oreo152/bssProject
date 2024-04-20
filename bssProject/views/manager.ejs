@@ -1,0 +1,147 @@
+<%- include('partials/header') %>
+    <div class="tab" onclick="openTab('Data')">Data</div>
+    <div class="tab" onclick="openTab('Patients')">Patients</div>
+    <div class="tab" onclick="openTab('Employees')">Employees</div>
+    
+    <div id="Data" class="tabcontent">
+        <h1>Data</h1>
+        <p>Total Cases:<%= totalCases %></p>
+        <p>Today's Appointments:<%= pendingAppointments %></p>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Age</th>
+              <th>Gender</th>
+              <th>Phone Number</th>
+              <th>Doctor</th>
+              <th>Message</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% patients.forEach(patient => { %>
+              <tr>
+                <td><%= patient.name %></td>
+                <td><%= patient.email %></td>
+                <td><%= patient.age %></td>
+                <td><%= patient.gender %></td>
+                <td><%= patient.phone %></td>
+                <td><%= patient.doctor %></td>
+                <td><%= patient.message %></td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+        
+      </div>
+    </div>
+
+    <div id="Patients" class="tabcontent">
+      <h3>Patients</h3>
+      <% allPatients.forEach(patient => { %>
+        <div> 
+            <label>
+                <input type="checkbox" name="patient" value="<%= patient.name %>">
+                <a href="/PatientRecord/<%=patient.email %>"><%= patient.name %></a>
+            </label>    
+        </div>
+    <% }); %>
+    </div>
+
+    <div id="Employees" class="tabcontent">
+      <h2>Employees</h2>
+     <!-- employees.ejs -->
+<div id="employeeForm">
+  <h2>Add Employee</h2>
+  <form id="addEmployeeForm">
+      <!-- Add input fields for employee details -->
+      <input type="text" id="name" placeholder="Name" required>
+      <input type="date" id="date_of_joining" placeholder="Date of Joining" required>
+      <input type="number" id="aadhar_number" placeholder="Aadhar Number" required>
+      <input type="number" id="salary_per_month" placeholder="Salary per Month" required>
+      <input type="text" id="task" placeholder="Task" required>
+      <button type="submit">Add Employee</button>
+  </form>
+</div>
+
+<!-- Table to display existing employees -->
+<table>
+  <!-- Table headers -->
+  <thead>
+      <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Date of Joining</th>
+          <th>Aadhar Number</th>
+          <th>Salary per Month</th>
+          <th>Task</th>
+      </tr>
+  </thead>
+  <!-- Table body to display employees -->
+  <tbody id="employeeTableBody">
+      <!-- Populate with existing employee data -->
+      <% employees.forEach(employee => { %>
+          <tr>
+              <td><%= employee.id %></td>
+              <td><%= employee.name %></td>
+              <td><%= employee.date_of_joining %></td>
+              <td><%= employee.aadhar_number %></td>
+              <td><%= employee.salary_per_month %></td>
+              <td><%= employee.task %></td>
+          </tr>
+      <% }); %>
+  </tbody>
+</table>
+
+<script>
+  // Handle form submission via AJAX
+  document.getElementById('addEmployeeForm').addEventListener('submit', async (event) => {
+      event.preventDefault(); // Prevent default form submission
+
+      // Get form data
+      const formData = {
+          name: document.getElementById('name').value,
+          date_of_joining: document.getElementById('date_of_joining').value,
+          aadhar_number: document.getElementById('aadhar_number').value,
+          salary_per_month: document.getElementById('salary_per_month').value,
+          task: document.getElementById('task').value
+      };
+
+      try {
+          // Send POST request to add employee
+          const response = await fetch('/addEmployee', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(formData)
+          });
+
+          if (response.ok) {
+              // If employee added successfully, reload the page to display updated data
+              window.location.reload();
+          } else {
+              console.error('Failed to add employee');
+          }
+      } catch (error) {
+          console.error('Error adding employee:', error);
+      }
+  });
+</script>
+
+
+    <script>
+      function openTab(tabName) {
+      var i;
+      var tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+      document.getElementById(tabName).style.display = "block";
+    }
+    </script>
+    
+    
+      
+<%- include('partials/footer') %>
